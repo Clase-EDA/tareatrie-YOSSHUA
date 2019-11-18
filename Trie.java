@@ -13,12 +13,9 @@ import static java.util.Arrays.sort;
  * @author yocis
  */
 public class Trie <T extends Comparable<Trie>>{
-    private NodoTrie<T> root;
-    public static Character[] simbolos;
-    public Trie(Character[] sim){
-        sort(sim);
-        simbolos = sim.clone();
-        root = new NodoTrie(sim);
+    private NodoTrie<T> root;    
+    public Trie(){                
+        root = new NodoTrie();
     }   
     
     public boolean busca(String word){
@@ -100,28 +97,20 @@ public class Trie <T extends Comparable<Trie>>{
         }        
     }
     public String toString(){
-        return toString(root, new StringBuilder(), "");
+        StringBuilder r = new StringBuilder();
+        toString(root, r, "");
+        return r.toString();
+        
     }
-    private String toString(NodoTrie act, StringBuilder resp, String palA){        
-        for(int i = 0; i < simbolos.length; i++){            
-            NodoTrie aux = act;            
-            NodoTrie aux2 = aux.getSig(simbolos[i]);
-                        
-            if(aux2 != null){                                
-                
-                if(aux2.getFin()){
-                    resp.append(palA+simbolos[i] +'\n');                    
+    private void toString(NodoTrie act, StringBuilder resp, String palA){        
+        if(act.getFin())
+            resp.append(palA + "\n");
+        for(int i = 0; i < 256; i++){            
+            if(act.getSig((char) i) != null){
+                if(act.getMaxHijo() > i){
+                    toString(act.getSig((char)i), resp, palA + (char)i);
                 }
-                toString(aux2, resp, palA+simbolos[i]);
             }
-            if(aux.getMaxHijo()!= -1){
-                    if(i > aux.getMaxHijo())
-                        break;
-            }else{
-                break;
-            }
-            
         }
-        return resp.toString();
     }
 }
