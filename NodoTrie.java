@@ -12,18 +12,13 @@ package ArbolTrie;
  * @author yocis
  */
 public class NodoTrie<T> {
-    private static Character[] simb;
+    
     private NodoTrie<T>[] hijos;
     private boolean finPal; 
     private int maxHijo=-1;
-    
-    public NodoTrie(Character[] simbolos){
-         hijos = new NodoTrie[simbolos.length];
-         simb = simbolos;
-         finPal = false;
-    }
+        
     public NodoTrie(){
-         hijos = new NodoTrie[simb.length];                 
+         hijos = new NodoTrie[256];                 
          finPal = false;
     }
     public boolean getFin(){
@@ -33,33 +28,22 @@ public class NodoTrie<T> {
         finPal= r;
         
     }       
-    public NodoTrie<T> getSig(char letra){
-        int i = 0;
-        while(i < simb.length && letra != simb[i] )
-            i++;
-        if(i == simb.length)
-            throw new NullPointerException("No existe el simbolo");
-        
-        return hijos[i];
+    public NodoTrie<T> getSig(char letra){                
+        return hijos[(int)letra];
     }    
     public void setSig(NodoTrie<T> a, char l){
-        int i = 0;
-        while(i < simb.length && l != simb[i] )
-            i++;
-        if(i == simb.length)
-            throw new NullPointerException("No existe el simbolo");
-        else{
-            hijos[i] = a;
-            if(i > maxHijo)
-                maxHijo = i;
-        }
+        int pos = (int)l;
+        hijos[pos] = a;                            
+        if(pos > maxHijo)
+            maxHijo = pos;        
+        
     }
     
     public boolean estaVacio(){
         int i = 0;
-        while(i < simb.length && hijos[i] == null )
+        while(i < 256 && hijos[i] == null)
             i++;
-        return i == simb.length;
+        return i == 256;
     }
     public int getMaxHijo(){
         return maxHijo;
